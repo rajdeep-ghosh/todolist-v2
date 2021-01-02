@@ -6,6 +6,17 @@
     <title>Todo List</title>
 </head>
 <body>
-    <h1>Today is <%= kindOfDay %>!</h1>
+    <h1><%= kindOfDay %> </h1>
+    <ul>
+        <% if (newListItem.length !== 0) { %> 
+            <% for (var i=0; i<newListItem.length; i++) { %> 
+                <li> <%= newListItem[i] %> </li>
+            <% } %> 
+        <% } %> 
+    </ul>   
+    <form action="/" method="POST">
+        <input type="text" name="newItem" placeholder="Enter New Item" required autofocus>
+        <button type="submit" name="button">Add</button>
+    </form> 
 </body>
 </html>
