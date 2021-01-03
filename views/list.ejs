@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="box" id="heading">
-        <h1><%= kindOfDay %> </h1>
+        <h1><%= listTitle %> </h1>
     </div>
     <div class="box">
         <% if (newListItem.length !== 0) { %> 
@@ -21,7 +21,7 @@
         <% } %>
         <form class="item" action="/" method="POST">
             <input type="text" name="newItem" placeholder="New Item" required autofocus autocomplete="off">
-            <button type="submit" name="button">+</button>
+            <button type="submit" name="list" value="<%= listTitle %>">+</button>
         </form>  
     </div>  
 </body>
