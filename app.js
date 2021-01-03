@@ -13,17 +13,7 @@ let items = [];
 let workItems = [];
 
 app.get("/", (req, res) => {
-    // const today = new Date();
-    // const options = {
-    //     weekday: "long",
-    //     day: "numeric",
-    //     month: "short",
-    //     year: "numeric"
-    // };
-    
-    // const day = today.toLocaleDateString("en-US", options);
-
-    const day = date();
+    const day = date.getDate();
     res.render("list", {listTitle: day, newListItem: items});
 });
 
