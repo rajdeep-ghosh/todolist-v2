@@ -34,6 +34,28 @@ const itemsSchema = new mongoose.Schema({
 // Make new model for itemsSchema
 const Item = mongoose.model("Item", itemsSchema);
 
+const item1 = new Item({
+    name: "Welcome to your todolist!"
+});
+
+const item2 = new Item({
+    name: "Click on the + to add a new item"
+});
+
+const item3 = new Item({
+    name: "<-- Hit this to delete an item"
+});
+
+const defaultItems = [item1, item2, item3];
+
+Item.insertMany(defaultItems, (err) => {
+    if (!err) {
+        console.log("Successfully inserted");
+    } else {
+        console.log(err);
+    }
+})
+
 app.get("/", (req, res) => {
     const day = date.getDate();
     res.render("list", {listTitle: day, newListItem: items});
