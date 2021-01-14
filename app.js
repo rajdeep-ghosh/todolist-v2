@@ -48,41 +48,35 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3];
 
-
-
 app.get("/", (req, res) => {
     Item.find({}, (err, foundItems) => {
-            if (err) {
-                console.log(err);
+        if (err) {
+            console.log(err);
+        } else {
+            if (foundItems.length === 0) {
+                Item.insertMany(defaultItems, (err) => {
+                    if (!err) {
+                        console.log("Successfully inserted");
+                    } else {
+                        console.log(err);
+                    }
+                });
+                res.redirect("/");
             } else {
-                if (foundItems.length === 0) {
-                    Item.insertMany(defaultItems, (err) => {
-                        if (!err) {
-                            console.log("Successfully inserted");
-                        } else {
-                            console.log(err);
-                        }
-                    });
-                    res.redirect("/");
-                } else {
-                    res.render("list", {listTitle: "Today", newListItem: foundItems});
-                }
+                res.render("list", {listTitle: "Today", newListItem: foundItems});
             }
-        });
-
-    // const day = date.getDate();
-    // res.render("list", {listTitle: day, newListItem: items});
+        }
+    });
 });
 
 app.post("/", (req, res) => {
-    let item = req.body.newItem;
-    if (req.body.list === "Work") {
-        workItems.push(item);
-        res.redirect("/work");
-    } else {
-        items.push(item);
-        res.redirect("/");
-    }
+    const itemName = req.body.newItem;
+    
+    const item = new Item({
+        name: itemName
+    });
+    item.save();
+    res.redirect("/");
 });
 
 app.get("/work", (req, res) => {
