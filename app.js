@@ -79,6 +79,17 @@ app.post("/", (req, res) => {
     res.redirect("/");
 });
 
+app.post("/delete", (req, res) => {
+    Item.findByIdAndRemove(req.body.deleteItem, {useFindAndModify: false}, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Successfully deleted item");
+        }
+    });
+    res.redirect("/");
+});
+
 app.get("/work", (req, res) => {
     res.render("list", {listTitle: "Work", newListItem: workItems});
 });
