@@ -10,7 +10,7 @@ app.set("view engine", "ejs");
 
 const port = process.env.PORT || 3000;
 
-let items = [];
+// let items = [];
 let workItems = [];
 
 // Connect MongoDB at default port 27017.
@@ -48,17 +48,30 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3];
 
-Item.insertMany(defaultItems, (err) => {
-    if (!err) {
-        console.log("Successfully inserted");
-    } else {
-        console.log(err);
-    }
-})
+
 
 app.get("/", (req, res) => {
-    const day = date.getDate();
-    res.render("list", {listTitle: day, newListItem: items});
+    Item.find({}, (err, foundItems) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (foundItems.length === 0) {
+                    Item.insertMany(defaultItems, (err) => {
+                        if (!err) {
+                            console.log("Successfully inserted");
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                    res.redirect("/");
+                } else {
+                    res.render("list", {listTitle: "Today", newListItem: foundItems});
+                }
+            }
+        });
+
+    // const day = date.getDate();
+    // res.render("list", {listTitle: day, newListItem: items});
 });
 
 app.post("/", (req, res) => {
