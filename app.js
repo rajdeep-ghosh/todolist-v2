@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const date = require(__dirname + "/modules/date.js");
 
 const app = express();
@@ -11,6 +12,27 @@ const port = process.env.PORT || 3000;
 
 let items = [];
 let workItems = [];
+
+// Connect MongoDB at default port 27017.
+mongoose.connect("mongodb://localhost:27017/todolistDB", {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+}, (err) => {
+    if (!err) {
+        console.log('MongoDB Connection Succeeded.');
+    } else {
+        console.log('Error in DB connection: ' + err);
+    }
+});
+
+// Make itemsSchema for the db
+const itemsSchema = new mongoose.Schema({
+    name: String
+});
+
+// Make new model for itemsSchema
+const Item = mongoose.model("Item", itemsSchema);
 
 app.get("/", (req, res) => {
     const day = date.getDate();

@@ -1,3 +1,3 @@
-# todolist-v1
+# todolist-v2
 
-Todo List using EJS
+Todo List using EJS and MongoDB
