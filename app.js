@@ -103,14 +103,25 @@ app.post("/", (req, res) => {
 });
 
 app.post("/delete", (req, res) => {
-    Item.findByIdAndRemove(req.body.deleteItem, {useFindAndModify: false}, (err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Successfully deleted item");
-        }
-    });
-    res.redirect("/");
+    const deleteItem = req.body.deleteItem;
+    const listName = req.body.listName;
+
+    if(listName === "Today") {
+        Item.findByIdAndRemove(deleteItem, {useFindAndModify: false}, (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Successfully deleted item");
+            }
+        });
+        res.redirect("/");
+    } else {
+        List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: deleteItem}}}, {useFindAndModify: false}, (err, foundItems) => {
+            if(!err) {
+                res.redirect("/" + listName);
+            }
+        });
+    }    
 });
 
 app.get("/:route", (req, res) => {
