@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const _ = require("lodash");
 const date = require(__dirname + "/modules/date.js");
 
 const app = express();
@@ -9,9 +10,6 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 const port = process.env.PORT || 3000;
-
-// let items = [];
-let workItems = [];
 
 // Connect MongoDB at default port 27017.
 mongoose.connect("mongodb://localhost:27017/todolistDB", {
@@ -125,7 +123,7 @@ app.post("/delete", (req, res) => {
 });
 
 app.get("/:route", (req, res) => {
-    const customListName = req.params.route;
+    const customListName = _.capitalize(req.params.route);
 
     List.findOne({name: customListName}, (err, foundList) => {
         if (err) {
@@ -147,8 +145,6 @@ app.get("/:route", (req, res) => {
             }
         }
     });
-
-    // res.render("list", {listTitle: customListName, newListItem: workItems});
 });
 
 app.get("/about", (req, res) => {
