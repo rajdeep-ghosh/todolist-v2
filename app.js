@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -12,7 +13,7 @@ app.set("view engine", "ejs");
 const port = process.env.PORT || 3000;
 
 // Connect MongoDB at default port 27017.
-mongoose.connect("mongodb://localhost:27017/todolistDB", {
+mongoose.connect("mongodb+srv://" + process.env.AUTH + "@cluster0.mahaq.mongodb.net/todolistDB?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
